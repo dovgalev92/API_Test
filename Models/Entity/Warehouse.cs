@@ -12,11 +12,11 @@ namespace API_Test.Models.Entity
         public int? CompanyId { get; set; }
         [DisplayName("Место расположения")]
         public int? RegionId { get; set; }
-        [NotMapped]
+        
         public Company? Company { get; set; }
-        [NotMapped]
+        
         public Region? Region { get; set; }
-        [NotMapped]
+        
         public List<WarehouseRoom>? WarehouseRooms { get; set; }
         /// <summary>
         /// количество комнат
