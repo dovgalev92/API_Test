@@ -16,30 +16,30 @@ namespace API_Test.Data
             await _context.AddAsync(warehouse);
             await _context.SaveChangesAsync();
             
-           
         }
 
         public async Task<List<Warehouse>> GetAllCommand()
         {
-            var query = from item in _context.Warehouses select item;
+            var list_warehouse = from items in _context.Warehouses.Include(r =>r.Region) select items;
 
-            var queryCountItems = await _context.WarehouseRooms.AsNoTracking().ToListAsync();
+            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
 
-            List<Warehouse> newWarehouses = new();
-            foreach(var item in query)
+            List<Warehouse> warehouses = new List<Warehouse>();
+            foreach (var item in list_warehouse)
             {
-                Warehouse listItem_warehouse= new Warehouse();
-                listItem_warehouse.Id = item.Id;
-                listItem_warehouse.Name = item.Name;
-                listItem_warehouse.RegionId= item.RegionId;
+                Warehouse newWarehouse = new Warehouse();
+                newWarehouse.Id = item.Id;
+                newWarehouse.Name = item.Name;
+                newWarehouse.RegionId= item.RegionId;
 
-                var resultRoomCount = queryCountItems.Where(x => x.WarehouseId.Equals(item.Id));
-                listItem_warehouse.roomCount = resultRoomCount.Count();
+                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id);
 
-                newWarehouses.Add(listItem_warehouse);
+                newWarehouse.roomCount = roomCount.Count();
+
+                warehouses.Add(newWarehouse);
             }
 
-            return newWarehouses;
+            return warehouses;
         }
 
         public async Task GetCommandById(int? id)

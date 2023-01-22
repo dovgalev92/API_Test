@@ -65,3 +65,5 @@ C:\Users\Admin\source\repos\API_Test\obj\Debug\net6.0\refint\API_Test.dll
 C:\Users\Admin\source\repos\API_Test\obj\Debug\net6.0\API_Test.pdb
 C:\Users\Admin\source\repos\API_Test\obj\Debug\net6.0\API_Test.genruntimeconfig.cache
 C:\Users\Admin\source\repos\API_Test\obj\Debug\net6.0\ref\API_Test.dll
+C:\Users\Admin\source\repos\API_Test\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\Admin\source\repos\API_Test\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
