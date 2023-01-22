@@ -6,8 +6,10 @@ namespace API_Test.Data
     {
         Task CreateCommand(Warehouse warehouse);
         Task<List<Warehouse>> GetAllCommand();
-        Task GetCommandById(int? id);
+        Task <Warehouse> GetCommandById(int? id);
         Task UpdateCommand(Warehouse warehouse);
         void DeleteCommand(int? id);
+        Task<List<Warehouse>> GetAllData();
+        
     }
 }

@@ -8,6 +8,8 @@ namespace API_Test.Models.Mapper
         public MappProfile()
         {
             CreateMap<Warehouse, WarehouseReadDto>();
+            CreateMap<Warehouse, WarehouseReadDto_Id>();
+                
         }
     }
 }

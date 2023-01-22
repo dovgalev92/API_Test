@@ -20,36 +20,35 @@ namespace API_Test.Data
 
         public async Task<List<Warehouse>> GetAllCommand()
         {
-            var list_warehouse = from items in _context.Warehouses.Include(r =>r.Region) select items;
-
-            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
-
-            List<Warehouse> warehouses = new List<Warehouse>();
-            foreach (var item in list_warehouse)
-            {
-                Warehouse newWarehouse = new Warehouse();
-                newWarehouse.Id = item.Id;
-                newWarehouse.Name = item.Name;
-                newWarehouse.RegionId= item.RegionId;
-
-                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id);
-
-                newWarehouse.roomCount = roomCount.Count();
-
-                warehouses.Add(newWarehouse);
-            }
-
-            return warehouses;
+           return await GetAllData();
         }
 
-        public async Task GetCommandById(int? id)
+        public  async Task<Warehouse> GetCommandById(int? id)
         {
             if(id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            await _context.Warehouses.FirstOrDefaultAsync(x => x.Id == id);
+            var list_warehouse = await _context.Warehouses.Where(x => x.Id.Equals(id)).ToListAsync();
+
+            var room_warehouses = _context.WarehouseRooms.ToList();
+
+            Warehouse newWarehouse = new Warehouse();
+            foreach (var item in list_warehouse)
+            {
+                newWarehouse.Id = item.Id;
+                newWarehouse.Name = item.Name;
+
+                var list_room = room_warehouses.Where(x => x.WarehouseId == item.Id).ToList();
+                foreach (var name_room in list_room)
+                {
+                    newWarehouse.name_compartment += name_room.Name;
+                    newWarehouse.name_compartment +=",";
+                }
+            }
+            return newWarehouse;
+
         }
 
         public async Task UpdateCommand(Warehouse warehouse)
@@ -72,5 +71,29 @@ namespace API_Test.Data
             _context.Warehouses.Remove(deleteItem);
             _context.SaveChanges();
         }
+        public async Task<List<Warehouse>> GetAllData()
+        {
+            var list_warehouse = from items in _context.Warehouses.Include(r => r.Region).Include(c => c.Company) select items;
+
+            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
+
+            List<Warehouse> warehouses = new List<Warehouse>();
+            foreach (var item in list_warehouse)
+            {
+                Warehouse newWarehouse = new Warehouse();
+                newWarehouse.Id = item.Id;
+                newWarehouse.Name = item.Name;
+                newWarehouse.CompanyId = item.CompanyId;
+                newWarehouse.RegionId = item.RegionId;
+
+                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id);
+
+                newWarehouse.roomCount = roomCount.Count();
+
+                warehouses.Add(newWarehouse);
+            }
+            return warehouses;
+        }
+       
     }
 }

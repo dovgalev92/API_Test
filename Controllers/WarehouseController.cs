@@ -27,5 +27,17 @@ namespace API_Test.Controllers
             return Ok(_mapper.Map<IEnumerable<WarehouseReadDto>>(commandItems));
 
         }
+        [HttpGet("{id}")]
+        public  async Task<ActionResult> GetWarehouses(int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                var commandById = await _command.GetCommandById(id);
+
+                return Ok(_mapper.Map<WarehouseReadDto_Id>(commandById));
+
+            }
+            return NotFound();
+        }
     }
 }
