@@ -18,15 +18,16 @@ namespace API_Test.Controllers
             _command = command;
             _mapper = mapper;
         }
-
+        // GET api/Warehouse
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Warehouse>>>GetAllWareuses()
+        public async Task<ActionResult<IEnumerable<WarehouseReadDto>>>GetAllWareuses()
         {
             var commandItems = await _command.GetAllCommand();
 
             return Ok(_mapper.Map<IEnumerable<WarehouseReadDto>>(commandItems));
-
         }
+
+        // GET api/Warehouse/5
         [HttpGet("{id}")]
         public  async Task<ActionResult> GetWarehouses(int? id)
         {
@@ -35,9 +36,10 @@ namespace API_Test.Controllers
                 var commandById = await _command.GetCommandById(id);
 
                 return Ok(_mapper.Map<WarehouseReadDto_Id>(commandById));
-
             }
             return NotFound();
         }
+       
+       
     }
 }

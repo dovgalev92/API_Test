@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using API_Test.Models.Entity;
+using Microsoft.VisualBasic;
 
 namespace API_Test.Data
 {
@@ -20,7 +21,27 @@ namespace API_Test.Data
 
         public async Task<List<Warehouse>> GetAllCommand()
         {
-           return await GetAllData();
+            var list_warehouse = _context.Warehouses.Include(r => r.Region).Include(c => c.Company);
+
+            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
+
+            List<Warehouse> warehouses = new List<Warehouse>();
+            foreach (var item in list_warehouse)
+            {
+                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id).Count();
+
+                Warehouse newWarehouse = new Warehouse()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CompanyId = item.CompanyId,
+                    RegionId = item.RegionId,
+                    roomCount = roomCount
+                };
+                warehouses.Add(newWarehouse);
+            }
+
+            return warehouses;
         }
 
         public  async Task<Warehouse> GetCommandById(int? id)
@@ -71,29 +92,7 @@ namespace API_Test.Data
             _context.Warehouses.Remove(deleteItem);
             _context.SaveChanges();
         }
-        public async Task<List<Warehouse>> GetAllData()
-        {
-            var list_warehouse = from items in _context.Warehouses.Include(r => r.Region).Include(c => c.Company) select items;
-
-            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
-
-            List<Warehouse> warehouses = new List<Warehouse>();
-            foreach (var item in list_warehouse)
-            {
-                Warehouse newWarehouse = new Warehouse();
-                newWarehouse.Id = item.Id;
-                newWarehouse.Name = item.Name;
-                newWarehouse.CompanyId = item.CompanyId;
-                newWarehouse.RegionId = item.RegionId;
-
-                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id);
-
-                newWarehouse.roomCount = roomCount.Count();
-
-                warehouses.Add(newWarehouse);
-            }
-            return warehouses;
-        }
+      
        
     }
 }

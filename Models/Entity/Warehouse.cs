@@ -13,9 +13,9 @@ namespace API_Test.Models.Entity
         [DisplayName("Место расположения")]
         public int? RegionId { get; set; }
         
-        public Company? Company { get; set; }
+        public Company? Company { get; set; } = new Company();
         
-        public Region? Region { get; set; }
+        public Region? Region { get; set; } = new Region();
         
         public List<WarehouseRoom>? WarehouseRooms { get; set; }
         /// <summary>
