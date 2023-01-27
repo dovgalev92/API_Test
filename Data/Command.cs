@@ -52,37 +52,17 @@ namespace API_Test.Data
                 throw new ArgumentNullException(nameof(id));
             }
 
-            var command = _context.Warehouses.Where(c => c.Id == id)
+            var command = await _context.Warehouses.Where(c => c.Id == id)
                 .Select(warehouse => new Warehouse()
                 {
                     Name = warehouse.Name,
                     CompanyId = warehouse.CompanyId,
                     RegionId = warehouse.RegionId,
-                    name_compartment = string.Join(",", warehouse.WarehouseRooms.OrderBy(n => n.WarehouseId == warehouse.Id)
+                    name_compartment = string.Join(",", warehouse.WarehouseRooms
+                    .OrderBy(n => n.WarehouseId == warehouse.Id)
                     .Select(name => name.Name))
-                }).First();
+                }).FirstAsync();
             return command;
-
-            //var list_warehouse = await _context.Warehouses.Where(x => x.Id.Equals(id)).ToListAsync();
-
-            //var room_warehouses = _context.WarehouseRooms.ToList();
-
-            //Warehouse newWarehouse = new Warehouse();
-            //foreach (var item in list_warehouse)
-            //{
-            //    newWarehouse.Id = item.Id;
-            //    newWarehouse.Name = item.Name;
-            //    newWarehouse.CompanyId = item.CompanyId;
-            //    newWarehouse.RegionId = item.RegionId;
-
-            //    var list_room = room_warehouses.Where(x => x.WarehouseId == item.Id).ToList();
-            //    foreach (var name_room in list_room)
-            //    {
-            //        newWarehouse.name_compartment += string.Join(",", name_room.Name);
-                    
-            //    }
-            //}
-            //return newWarehouse;
 
         }
 
