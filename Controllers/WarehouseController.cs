@@ -29,29 +29,31 @@ namespace API_Test.Controllers
 
         // GET api/Warehouse/5
         [HttpGet("{id}")]
-        public async Task <ActionResult<WarehouseReadDto_Id>> GetWarehouses(int? id)
+        public ActionResult<WarehouseReadDto_Id> GetWarehouses(int? id)
         {
-            if (ModelState.IsValid)
+            if (id != null)
             {
-                var commandById = await _command.GetCommandById(id);
+                var commandById = _command.GetCommandById(id);
 
                 return Ok(_mapper.Map<WarehouseReadDto_Id>(commandById));
             }
             return NotFound();
         }
-        //GET Warehouse/
-        [HttpPost]
-        public async Task<ActionResult> CreateCommand([FromBody] WarewhouseCreateDto dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var createDto = _mapper.Map<Warehouse>(dto);
-            _command.CreateCommand(createDto);
-            return Ok();
-        }
        
+        [HttpPut("{id}")]
+        public  ActionResult<Warehouse> UpdateWarehouse(int id, WarehouseUpdateDto create)
+        {
+            var commandId = _command.GetCommandById(id);
+            if (commandId == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(create, commandId);
+            _command.UpdateCommand(commandId);
+            
+            return Content("Данные успешно обновлены");
+        }
        
     }
 }

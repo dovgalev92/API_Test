@@ -45,47 +45,49 @@ namespace API_Test.Data
             }
             return warehouses;
         }
-        public async Task<Warehouse> GetCommandById(int? id)
+        public Warehouse GetCommandById(int? id)
         {
             if(id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            var command = await _context.Warehouses.Where(c => c.Id == id)
+            var command = _context.Warehouses.Where(c => c.Id == id)
                 .Select(warehouse => new Warehouse()
                 {
+                    Id = warehouse.Id,
                     Name = warehouse.Name,
                     CompanyId = warehouse.CompanyId,
                     RegionId = warehouse.RegionId,
                     name_compartment = string.Join(",", warehouse.WarehouseRooms
                     .OrderBy(n => n.WarehouseId == warehouse.Id)
                     .Select(name => name.Name))
-                }).FirstAsync();
+                }).First();
+
             return command;
 
         }
 
-        public async Task UpdateCommand(Warehouse warehouse)
+        public  Task UpdateCommand(Warehouse warehouse)
         {
             if(warehouse == null)
             {
                 throw new ArgumentNullException(nameof(warehouse));
             }
+
             _context.Entry(warehouse).State= EntityState.Modified;
-            await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         public void DeleteCommand(int? id)
         {
             var deleteItem = _context.Warehouses.Find(id);
-            if(deleteItem == null)
+            if (deleteItem == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
             _context.Warehouses.Remove(deleteItem);
             _context.SaveChanges();
         }
-
     }
 }
