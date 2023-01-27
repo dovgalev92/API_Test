@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using API_Test.Models.Entity;
 using Microsoft.VisualBasic;
+using API_Test.Dtos;
+using System.Runtime.CompilerServices;
 
 namespace API_Test.Data
 {
@@ -8,13 +10,14 @@ namespace API_Test.Data
     {
         private readonly ApplicationDbContext _context;
         public Command(ApplicationDbContext context) { _context = context; }
-        public async Task CreateCommand(Warehouse warehouse)
+        public async Task CreateCommand(Warehouse create)
         {
-            if(warehouse == null)
+            if(create == null)
             {
-                throw new ArgumentNullException(nameof(warehouse));
+                throw new ArgumentNullException(nameof(create));
             }
-            await _context.AddAsync(warehouse);
+
+            await _context.Warehouses.AddAsync(create);
             await _context.SaveChangesAsync();
             
         }
@@ -40,35 +43,46 @@ namespace API_Test.Data
                 };
                 warehouses.Add(newWarehouse);
             }
-
             return warehouses;
         }
-
-        public  async Task<Warehouse> GetCommandById(int? id)
+        public async Task<Warehouse> GetCommandById(int? id)
         {
             if(id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            var list_warehouse = await _context.Warehouses.Where(x => x.Id.Equals(id)).ToListAsync();
-
-            var room_warehouses = _context.WarehouseRooms.ToList();
-
-            Warehouse newWarehouse = new Warehouse();
-            foreach (var item in list_warehouse)
-            {
-                newWarehouse.Id = item.Id;
-                newWarehouse.Name = item.Name;
-
-                var list_room = room_warehouses.Where(x => x.WarehouseId == item.Id).ToList();
-                foreach (var name_room in list_room)
+            var command = _context.Warehouses.Where(c => c.Id == id)
+                .Select(warehouse => new Warehouse()
                 {
-                    newWarehouse.name_compartment += name_room.Name;
-                    newWarehouse.name_compartment +=",";
-                }
-            }
-            return newWarehouse;
+                    Name = warehouse.Name,
+                    CompanyId = warehouse.CompanyId,
+                    RegionId = warehouse.RegionId,
+                    name_compartment = string.Join(",", warehouse.WarehouseRooms.OrderBy(n => n.WarehouseId == warehouse.Id)
+                    .Select(name => name.Name))
+                }).First();
+            return command;
+
+            //var list_warehouse = await _context.Warehouses.Where(x => x.Id.Equals(id)).ToListAsync();
+
+            //var room_warehouses = _context.WarehouseRooms.ToList();
+
+            //Warehouse newWarehouse = new Warehouse();
+            //foreach (var item in list_warehouse)
+            //{
+            //    newWarehouse.Id = item.Id;
+            //    newWarehouse.Name = item.Name;
+            //    newWarehouse.CompanyId = item.CompanyId;
+            //    newWarehouse.RegionId = item.RegionId;
+
+            //    var list_room = room_warehouses.Where(x => x.WarehouseId == item.Id).ToList();
+            //    foreach (var name_room in list_room)
+            //    {
+            //        newWarehouse.name_compartment += string.Join(",", name_room.Name);
+                    
+            //    }
+            //}
+            //return newWarehouse;
 
         }
 
@@ -92,7 +106,6 @@ namespace API_Test.Data
             _context.Warehouses.Remove(deleteItem);
             _context.SaveChanges();
         }
-      
-       
+
     }
 }

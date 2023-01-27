@@ -16,7 +16,7 @@ namespace API_Test.Models.Entity
         public Company? Company { get; set; } = new Company();
         
         public Region? Region { get; set; } = new Region();
-        
+
         public List<WarehouseRoom>? WarehouseRooms { get; set; }
         /// <summary>
         /// количество комнат

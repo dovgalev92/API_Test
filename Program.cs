@@ -1,4 +1,5 @@
 using API_Test.Data;
+using API_Test.Models.Entity;
 using API_Test.Models.Mapper;
 using Microsoft.EntityFrameworkCore;
 

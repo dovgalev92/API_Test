@@ -9,6 +9,9 @@ namespace API_Test.Models.Mapper
         {
             CreateMap<Warehouse, WarehouseReadDto>();
             CreateMap<Warehouse, WarehouseReadDto_Id>();
+            CreateMap<WarehouseRoom, WarewhouseCreateDto>()
+                .ForMember(region => region.NameRegion, x => x.MapFrom(cls => cls.Warehouse.Region.Name))
+                .ForMember(company => company.CompanyId, x => x.MapFrom(entity => entity.Warehouse.Company.Id));
                 
         }
     }

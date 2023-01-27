@@ -29,7 +29,7 @@ namespace API_Test.Controllers
 
         // GET api/Warehouse/5
         [HttpGet("{id}")]
-        public  async Task<ActionResult> GetWarehouses(int? id)
+        public async Task <ActionResult<WarehouseReadDto_Id>> GetWarehouses(int? id)
         {
             if (ModelState.IsValid)
             {
@@ -38,6 +38,18 @@ namespace API_Test.Controllers
                 return Ok(_mapper.Map<WarehouseReadDto_Id>(commandById));
             }
             return NotFound();
+        }
+        //GET Warehouse/
+        [HttpPost]
+        public async Task<ActionResult> CreateCommand([FromBody] WarewhouseCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createDto = _mapper.Map<Warehouse>(dto);
+            _command.CreateCommand(createDto);
+            return Ok();
         }
        
        

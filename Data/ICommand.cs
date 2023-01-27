@@ -4,10 +4,10 @@ namespace API_Test.Data
 {
     public interface ICommand
     {
-        Task CreateCommand(Warehouse warehouse);
+        Task CreateCommand(Warehouse create);
         Task <List<Warehouse>> GetAllCommand();
         Task <Warehouse> GetCommandById(int? id);
-        Task UpdateCommand(Warehouse warehouse);
+        Task UpdateCommand(Warehouse update);
         void DeleteCommand(int? id);
         
         
