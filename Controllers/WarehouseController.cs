@@ -4,6 +4,7 @@ using API_Test.Models.Entity;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_Test.Controllers
 {
@@ -13,11 +14,27 @@ namespace API_Test.Controllers
     {
         private ICommand _command;
         private IMapper _mapper;
-        public WarehouseController(ICommand command, IMapper mapper)
+        private readonly ApplicationDbContext context;
+        public WarehouseController(ICommand command, IMapper mapper, ApplicationDbContext context)
         {
             _command = command;
             _mapper = mapper;
+            this.context = context;
         }
+
+        [HttpPost]
+        public ActionResult<WarehouseCreatDto> CreateWarehouse(Warehouse creat)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createItem =  _command.CreateCommand(creat);
+            
+
+            return Ok(_mapper.Map<WarehouseCreatDto>(createItem));
+        }
+
         // GET api/Warehouse
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WarehouseReadDto>>>GetAllWareuses()
@@ -62,8 +79,9 @@ namespace API_Test.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _command.DeleteCommand(id);
 
+            _command.DeleteCommand(id);
+          
             return Content("Данные успешно удалены");
         }
        

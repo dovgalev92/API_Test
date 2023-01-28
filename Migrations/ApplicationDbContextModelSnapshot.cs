@@ -94,7 +94,7 @@ namespace API_Test.Migrations
                     b.Property<double>("Square")
                         .HasColumnType("float");
 
-                    b.Property<int?>("WarehouseId")
+                    b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -123,7 +123,9 @@ namespace API_Test.Migrations
                 {
                     b.HasOne("API_Test.Models.Entity.Warehouse", "Warehouse")
                         .WithMany("WarehouseRooms")
-                        .HasForeignKey("WarehouseId");
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Warehouse");
                 });

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Test.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230122161646_Init")]
+    [Migration("20230128214425_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,9 +50,6 @@ namespace API_Test.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("WarehouseId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -99,7 +96,7 @@ namespace API_Test.Migrations
                     b.Property<double>("Square")
                         .HasColumnType("float");
 
-                    b.Property<int?>("WarehouseId")
+                    b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -128,7 +125,9 @@ namespace API_Test.Migrations
                 {
                     b.HasOne("API_Test.Models.Entity.Warehouse", "Warehouse")
                         .WithMany("WarehouseRooms")
-                        .HasForeignKey("WarehouseId");
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Warehouse");
                 });

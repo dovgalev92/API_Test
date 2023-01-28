@@ -10,18 +10,15 @@ namespace API_Test.Data
     {
         private readonly ApplicationDbContext _context;
         public Command(ApplicationDbContext context) { _context = context; }
-        public async Task CreateCommand(Warehouse create)
+        public async Task CreateCommand(Warehouse creat)
         {
-            if(create == null)
+            if(creat == null)
             {
-                throw new ArgumentNullException(nameof(create));
+                throw new ArgumentNullException(nameof(creat));
             }
-
-            await _context.Warehouses.AddAsync(create);
+            await _context.AddAsync(creat);
             await _context.SaveChangesAsync();
-            
         }
-
         public async Task<List<Warehouse>> GetAllCommand()
         {
             var list_warehouse = _context.Warehouses.Include(r => r.Region).Include(c => c.Company);
@@ -62,7 +59,7 @@ namespace API_Test.Data
                     name_compartment = string.Join(",", warehouse.WarehouseRooms
                     .OrderBy(n => n.WarehouseId == warehouse.Id)
                     .Select(name => name.Name))
-                }).First();
+                }).FirstOrDefault();
 
             return command;
 
@@ -79,9 +76,9 @@ namespace API_Test.Data
             return _context.SaveChangesAsync();
         }
 
-        public async Task DeleteCommand(int? id)
+        public void DeleteCommand(int? id)
         {
-            var deleteItem = _context.Warehouses.Include(w =>w.WarehouseRooms).FirstOrDefault(x => x.Id == id);
+            var deleteItem = _context.Warehouses.Find(id);
             if (deleteItem == null)
             {
                 throw new ArgumentNullException(nameof(id));
