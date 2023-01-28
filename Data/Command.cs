@@ -79,9 +79,9 @@ namespace API_Test.Data
             return _context.SaveChangesAsync();
         }
 
-        public void DeleteCommand(int? id)
+        public async Task DeleteCommand(int? id)
         {
-            var deleteItem = _context.Warehouses.Find(id);
+            var deleteItem = _context.Warehouses.Include(w =>w.WarehouseRooms).FirstOrDefault(x => x.Id == id);
             if (deleteItem == null)
             {
                 throw new ArgumentNullException(nameof(id));

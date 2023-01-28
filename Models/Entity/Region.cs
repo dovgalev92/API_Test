@@ -6,8 +6,6 @@ namespace API_Test.Models.Entity
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int? WarehouseId { get; set; }
-       
         public List<Warehouse>? Warehouse { get; set; }
     }
 }

@@ -39,9 +39,9 @@ namespace API_Test.Controllers
             }
             return NotFound();
         }
-       
+        // PUT api/Warehouse/5
         [HttpPut("{id}")]
-        public  ActionResult<Warehouse> UpdateWarehouse(int id, WarehouseUpdateDto create)
+        public  ActionResult UpdateWarehouse(int id, WarehouseUpdateDto dto)
         {
             var commandId = _command.GetCommandById(id);
             if (commandId == null)
@@ -49,10 +49,22 @@ namespace API_Test.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(create, commandId);
+            _mapper.Map(dto, commandId);
             _command.UpdateCommand(commandId);
             
             return Content("Данные успешно обновлены");
+        }
+        // Delete api/Warehouse/5
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCommandById(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest(ModelState);
+            }
+            _command.DeleteCommand(id);
+
+            return Content("Данные успешно удалены");
         }
        
     }

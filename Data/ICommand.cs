@@ -8,7 +8,7 @@ namespace API_Test.Data
         Task <List<Warehouse>> GetAllCommand();
         Warehouse GetCommandById(int? id);
         Task UpdateCommand(Warehouse update);
-        void DeleteCommand(int? id);
+        Task DeleteCommand(int? id);
         
     }
 }
