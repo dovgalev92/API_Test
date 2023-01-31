@@ -14,12 +14,10 @@ namespace API_Test.Controllers
     {
         private ICommand _command;
         private IMapper _mapper;
-        private readonly ApplicationDbContext context;
-        public WarehouseController(ICommand command, IMapper mapper, ApplicationDbContext context)
+        public WarehouseController(ICommand command, IMapper mapper)
         {
             _command = command;
             _mapper = mapper;
-            this.context = context;
         }
         // Post/Warehouse
         [HttpPost]
@@ -32,7 +30,6 @@ namespace API_Test.Controllers
             _command.CreateCommand(dto);
 
             return Content("Данные успешно добавлены");
-             
         }
 
         // GET api/Warehouse
