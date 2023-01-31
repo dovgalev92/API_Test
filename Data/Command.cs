@@ -3,6 +3,7 @@ using API_Test.Models.Entity;
 using Microsoft.VisualBasic;
 using API_Test.Dtos;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace API_Test.Data
 {
@@ -10,14 +11,32 @@ namespace API_Test.Data
     {
         private readonly ApplicationDbContext _context;
         public Command(ApplicationDbContext context) { _context = context; }
-        public async Task CreateCommand(Warehouse creat)
+        public void CreateCommand(WarehouseCreatDto dto)
         {
-            if(creat == null)
+            var warehouseItem = new Warehouse()
             {
-                throw new ArgumentNullException(nameof(creat));
+                Name = dto.Warehouse.Name,
+                CompanyId = dto.Warehouse.CompanyId,
+                RegionId = dto.Warehouse.RegionId
+            };
+            _context.Add(warehouseItem);
+            _context.SaveChanges();
+
+            var rooms = new WarehouseRoom()
+            {
+                Name = dto.WarehouseRoom.Name,
+                Square = dto.WarehouseRoom.Square,
+                WarehouseId = warehouseItem.Id,
+            };
+
+            if (rooms == null)
+            {
+                throw new ArgumentNullException(nameof(rooms), nameof(warehouseItem));
             }
-            await _context.AddAsync(creat);
-            await _context.SaveChangesAsync();
+
+            _context.Add(rooms);
+            _context.SaveChanges();
+
         }
         public async Task<List<Warehouse>> GetAllCommand()
         {

@@ -21,18 +21,18 @@ namespace API_Test.Controllers
             _mapper = mapper;
             this.context = context;
         }
-
+        // Post/Warehouse
         [HttpPost]
-        public ActionResult<WarehouseCreatDto> CreateWarehouse(Warehouse creat)
+        public ActionResult CreateWarehouse([FromBody] WarehouseCreatDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var createItem =  _command.CreateCommand(creat);
-            
+            _command.CreateCommand(dto);
 
-            return Ok(_mapper.Map<WarehouseCreatDto>(createItem));
+            return Content("Данные успешно добавлены");
+             
         }
 
         // GET api/Warehouse

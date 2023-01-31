@@ -27,6 +27,6 @@ namespace API_Test.Models.Entity
         /// Наименование комнат
         /// </summary>
         [NotMapped]
-        public string? name_compartment { get; set; }
+        public string ?name_compartment { get; set; }
     }
 }
