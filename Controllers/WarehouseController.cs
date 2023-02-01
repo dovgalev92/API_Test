@@ -27,8 +27,20 @@ namespace API_Test.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _command.CreateCommand(dto);
+            var creadItem = _mapper.Map<Warehouse>(dto);
+            _command.CreateCommand(creadItem);
 
+            return Content("Данные успешно добавлены");
+        }
+        // api/Warehouse/5/warehouseRoom
+        [HttpPost("{id}")]
+        public ActionResult CreateWarehouseRoom(int id, [FromBody] WarehouseRoom room)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _command.CreateCommandRoom(id, room);
             return Content("Данные успешно добавлены");
         }
 

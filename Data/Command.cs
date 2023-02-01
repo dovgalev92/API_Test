@@ -11,32 +11,23 @@ namespace API_Test.Data
     {
         private readonly ApplicationDbContext _context;
         public Command(ApplicationDbContext context) { _context = context; }
-        public void CreateCommand(WarehouseCreatDto dto)
+        public void CreateCommand(Warehouse warehouse)
         {
-            var warehouseItem = new Warehouse()
-            {
-                Name = dto.Warehouse.Name,
-                CompanyId = dto.Warehouse.CompanyId,
-                RegionId = dto.Warehouse.RegionId
-            };
-            _context.Add(warehouseItem);
-            _context.SaveChanges();
-
-            var rooms = new WarehouseRoom()
-            {
-                Name = dto.WarehouseRoom.Name,
-                Square = dto.WarehouseRoom.Square,
-                WarehouseId = warehouseItem.Id,
-            };
-
-            if (rooms == null)
-            {
-                throw new ArgumentNullException(nameof(rooms), nameof(warehouseItem));
-            }
-
-            _context.Add(rooms);
-            _context.SaveChanges();
-
+            _context.Entry(warehouse).State= EntityState.Added;
+           
+        }
+        public void CreateCommandRoom(int id, WarehouseRoom room)
+        {
+            var searchItem = _context.Warehouses.SingleOrDefault(x => x.Id == id);
+            var addItemRoom = searchItem != null ? _context.WarehouseRooms
+                .Add(new WarehouseRoom()
+                {
+                    Name = room.Name,
+                    Square = room.Square,
+                    WarehouseId = searchItem.Id
+                }) : throw new ArgumentException(nameof(searchItem), "Ошибка при вставке данных");
+            
+            _context.SaveChanges();       
         }
         public async Task<List<Warehouse>> GetAllCommand()
         {

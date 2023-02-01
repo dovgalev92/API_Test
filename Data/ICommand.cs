@@ -5,7 +5,8 @@ namespace API_Test.Data
 {
     public interface ICommand
     {
-        void CreateCommand(WarehouseCreatDto dto);
+        void CreateCommand(Warehouse warehouse);
+        void CreateCommandRoom(int id, WarehouseRoom room);
         Task <List<Warehouse>> GetAllCommand();
         Warehouse GetCommandById(int? id);
         Task UpdateCommand(Warehouse update);

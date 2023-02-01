@@ -4,7 +4,9 @@ namespace API_Test.Dtos
 {
     public class WarehouseCreatDto
     {
-        public Warehouse? Warehouse { get; set; }
-        public WarehouseRoom? WarehouseRoom { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public int? CompanyId { get; set; }
+        public int? RegionId { get; set; }
     }
 }
