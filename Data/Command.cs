@@ -4,22 +4,27 @@ using Microsoft.VisualBasic;
 using API_Test.Dtos;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging.Abstractions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace API_Test.Data
 {
     public class Command : ICommand
     {
         private readonly ApplicationDbContext _context;
-        public Command(ApplicationDbContext context) { _context = context; }
+        public Command(ApplicationDbContext context, IMapper mapper) 
+        { 
+            _context = context; 
+        }
         public void CreateCommand(Warehouse warehouse)
         {
             _context.Entry(warehouse).State= EntityState.Added;
             _context.SaveChanges();
-           
         }
         public void CreateCommandRoom(int id, WarehouseRoom room)
         {
             var searchItem = _context.Warehouses.SingleOrDefault(x => x.Id == id);
+
             var addItemRoom = searchItem != null ? _context.WarehouseRooms
                 .Add(new WarehouseRoom()
                 {
@@ -27,7 +32,7 @@ namespace API_Test.Data
                     Square = room.Square,
                     WarehouseId = searchItem.Id
                 }) : throw new ArgumentException(nameof(searchItem), "Ошибка при вставке данных");
-            
+
             _context.SaveChanges();       
         }
         public async Task<List<Warehouse>> GetAllCommand()
@@ -62,15 +67,15 @@ namespace API_Test.Data
 
             var command = _context.Warehouses.Where(c => c.Id == id)
                 .Select(warehouse => new Warehouse()
-                {
-                    Id = warehouse.Id,
-                    Name = warehouse.Name,
-                    CompanyId = warehouse.CompanyId,
-                    RegionId = warehouse.RegionId,
-                    name_compartment = string.Join(",", warehouse.WarehouseRooms
+                 {
+                     Id = warehouse.Id,
+                     Name = warehouse.Name,
+                     CompanyId = warehouse.CompanyId,
+                     RegionId = warehouse.RegionId,
+                     name_compartment = string.Join(",", warehouse.WarehouseRooms
                     .OrderBy(n => n.WarehouseId == warehouse.Id)
                     .Select(name => name.Name))
-                }).FirstOrDefault();
+                 }).FirstOrDefault();
 
             return command;
 

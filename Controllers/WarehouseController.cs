@@ -32,13 +32,16 @@ namespace API_Test.Controllers
         }
         // api/Warehouse/5/warehouseRoom
         [HttpPost("{id}")]
-        public ActionResult CreateWarehouseRoom(int id, [FromBody] WarehouseRoom room)
+        public ActionResult CreateWarehouseRoom(int id, [FromBody] CreateRoomDto room)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _command.CreateCommandRoom(id, room);
+
+            var roomItem = _mapper.Map<WarehouseRoom>(room);
+            _command.CreateCommandRoom(id, roomItem );
+
             return Content("Данные успешно добавлены");
         }
 
