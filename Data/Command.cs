@@ -14,6 +14,7 @@ namespace API_Test.Data
         public void CreateCommand(Warehouse warehouse)
         {
             _context.Entry(warehouse).State= EntityState.Added;
+            _context.SaveChanges();
            
         }
         public void CreateCommandRoom(int id, WarehouseRoom room)

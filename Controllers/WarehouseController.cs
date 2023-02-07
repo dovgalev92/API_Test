@@ -2,9 +2,7 @@
 using API_Test.Dtos;
 using API_Test.Models.Entity;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API_Test.Controllers
 {
