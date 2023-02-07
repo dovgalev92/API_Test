@@ -7,7 +7,8 @@ namespace API_Test.Models.Mapper
     {
         public MappProfile()
         {
-            CreateMap<Warehouse, WarehouseReadDto>();
+            CreateMap<Warehouse, WarehouseReadDto>()
+                        .ForMember(p => p.roomCount, x => x.MapFrom(x => x.WarehouseRooms.Where(c => c.WarehouseId == c.Warehouse.Id).Count()));
             CreateMap<Warehouse, WarehouseReadDto_Id>();
             CreateMap<WarehouseUpdateDto, Warehouse>();
             CreateMap<WarehouseCreatDto, Warehouse>();

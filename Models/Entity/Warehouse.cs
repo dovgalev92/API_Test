@@ -21,11 +21,11 @@ namespace API_Test.Models.Entity
         /// <summary>
         /// количество комнат
         /// </summary>
-        [NotMapped]
-        public int? roomCount { get; set; }
-        /// <summary>
-        /// Наименование комнат
-        /// </summary>
+        //[NotMapped]
+        ////public int? roomCount { get; set; }
+        ///// <summary>
+        ///// Наименование комнат
+        ///// </summary>
         [NotMapped]
         public string ?name_compartment { get; set; }
     }

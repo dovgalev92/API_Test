@@ -37,22 +37,19 @@ namespace API_Test.Data
         }
         public async Task<List<Warehouse>> GetAllCommand()
         {
-            var list_warehouse = _context.Warehouses.Include(r => r.Region).Include(c => c.Company);
+            var list_warehouse = await _context.Warehouses.Include(w =>w.WarehouseRooms).ToListAsync();
 
-            var room_warehouses = await _context.WarehouseRooms.ToListAsync();
 
             List<Warehouse> warehouses = new List<Warehouse>();
             foreach (var item in list_warehouse)
             {
-                var roomCount = room_warehouses.Where(x => x.WarehouseId == item.Id).Count();
-
                 Warehouse newWarehouse = new Warehouse()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     CompanyId = item.CompanyId,
                     RegionId = item.RegionId,
-                    roomCount = roomCount
+                    WarehouseRooms = item.WarehouseRooms
                 };
                 warehouses.Add(newWarehouse);
             }
