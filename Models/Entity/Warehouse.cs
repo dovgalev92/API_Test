@@ -18,15 +18,5 @@ namespace API_Test.Models.Entity
         public Region? Region { get; set; }
 
         public List<WarehouseRoom>? WarehouseRooms { get; set; }
-        /// <summary>
-        /// количество комнат
-        /// </summary>
-        //[NotMapped]
-        ////public int? roomCount { get; set; }
-        ///// <summary>
-        ///// Наименование комнат
-        ///// </summary>
-        [NotMapped]
-        public string ?name_compartment { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Net.Http.Headers;
+﻿using API_Test.Models.Entity;
+using Microsoft.Net.Http.Headers;
 
 namespace API_Test.Dtos
 {

@@ -39,7 +39,6 @@ namespace API_Test.Data
         {
             var list_warehouse = await _context.Warehouses.Include(w =>w.WarehouseRooms).ToListAsync();
 
-
             List<Warehouse> warehouses = new List<Warehouse>();
             foreach (var item in list_warehouse)
             {
@@ -57,25 +56,21 @@ namespace API_Test.Data
         }
         public Warehouse GetCommandById(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
-
             var command = _context.Warehouses.Where(c => c.Id == id)
                 .Select(warehouse => new Warehouse()
-                 {
-                     Id = warehouse.Id,
-                     Name = warehouse.Name,
-                     CompanyId = warehouse.CompanyId,
-                     RegionId = warehouse.RegionId,
-                     name_compartment = string.Join(",", warehouse.WarehouseRooms
-                    .OrderBy(n => n.WarehouseId == warehouse.Id)
-                    .Select(name => name.Name))
-                 }).FirstOrDefault();
+                {
+                    Id = warehouse.Id,
+                    Name = warehouse.Name,
+                    CompanyId = warehouse.CompanyId,
+                    RegionId = warehouse.RegionId,
+                    WarehouseRooms = warehouse.WarehouseRooms
+                }).FirstOrDefault();
 
             return command;
-
         }
 
         public  Task UpdateCommand(Warehouse warehouse)

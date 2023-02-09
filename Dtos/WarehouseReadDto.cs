@@ -8,7 +8,7 @@ namespace API_Test.Dtos
         public string? Name { get; set; }
         public int? RegionId { get; set; }
         public int? CompanyId { get; set; }
-        public int roomCount { get; set; }
+        public int RoomCount { get; set; }
 
     }
 }
