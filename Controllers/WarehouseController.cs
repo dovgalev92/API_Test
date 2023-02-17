@@ -21,10 +21,7 @@ namespace API_Test.Controllers
         [HttpPost]
         public ActionResult CreateWarehouse([FromBody] WarehouseCreatDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            
             var creadItem = _mapper.Map<Warehouse>(dto);
             _command.CreateCommand(creadItem);
 
@@ -34,10 +31,6 @@ namespace API_Test.Controllers
         [HttpPost("{id}")]
         public ActionResult CreateWarehouseRoom(int id, [FromBody] CreateRoomDto room)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var roomItem = _mapper.Map<WarehouseRoom>(room);
             _command.CreateCommandRoom(id, roomItem );
