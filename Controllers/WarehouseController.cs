@@ -31,7 +31,9 @@ namespace API_Test.Controllers
         [HttpPost("{id}")]
         public ActionResult CreateWarehouseRoom(int id, [FromBody] CreateRoomDto room)
         {
-
+            /* использование атрибута ApiController освобождает от использования проверки на валидность.
+              Автоматически преобразует ответ в экземпляр ProblemDetails
+            */
             var roomItem = _mapper.Map<WarehouseRoom>(room);
             _command.CreateCommandRoom(id, roomItem );
 
