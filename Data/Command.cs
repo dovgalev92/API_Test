@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using API_Test.Models.Entity;
-using Microsoft.VisualBasic;
-using API_Test.Dtos;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Logging.Abstractions;
+
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
+
 
 namespace API_Test.Data
 {
